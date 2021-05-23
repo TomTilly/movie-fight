@@ -18,7 +18,12 @@ const onInput = async (event) => {
       suggestions.classList.add('suggestions-container');
       target.parentElement.appendChild(suggestions);
     }
-    suggestions.innerHTML = '';
+
+    // Clear old suggestions
+    while (suggestions.firstChild) {
+      suggestions.removeChild(suggestions.firstChild);
+    }
+
     for (let i = 0; i < 5; i += 1) {
       const movie = movies[i];
       const suggestion = document.createElement('li');
