@@ -25,11 +25,14 @@ const onInput = async (event) => {
     }
 
     for (let i = 0; i < 5; i += 1) {
-      const movie = movies[i];
-      const suggestion = document.createElement('li');
-      suggestion.classList.add('suggestion');
-      suggestion.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title}"> ${movie.Title}`;
-      suggestions.appendChild(suggestion);
+      if (movies[i]) {
+        console.log(movies[i]);
+        const movie = movies[i];
+        const suggestion = document.createElement('li');
+        suggestion.classList.add('suggestion');
+        suggestion.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title}" width="68" height="100"> ${movie.Title}`;
+        suggestions.appendChild(suggestion);
+      }
     }
   }
 };

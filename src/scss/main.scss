@@ -18,6 +18,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-image: url('../assets/images/interlaced.png');
+  background-size: 300px;
 }
 
 /* Typography */
@@ -69,8 +71,6 @@ main {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   grid-gap: 1.5rem;
-  background-image: url('../assets/images/interlaced.png');
-  background-size: 300px;
   flex-grow: 1;
   flex-basis: 0;
 }
