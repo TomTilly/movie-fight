@@ -67,10 +67,12 @@ main {
   padding: 1.5rem 1rem;
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   grid-gap: 1.5rem;
   background-image: url('../assets/images/interlaced.png');
   background-size: 300px;
   flex-grow: 1;
+  flex-basis: 0;
 }
 
 @media (min-width: 800px) {

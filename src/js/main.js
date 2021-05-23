@@ -1,14 +1,19 @@
 import { fetchData } from './util';
 
-console.log('it worked');
-
 const omdbBaseUrl = 'http://www.omdbapi.com';
+const input1 = document.querySelector('[name="movie-1"]');
 
-const params = {
-  apikey: process.env.API_KEY,
-  s: 'avengers',
-};
-
-fetchData(omdbBaseUrl, params).then((response) => {
-  console.log(response);
+let interval;
+input1.addEventListener('input', (event) => {
+  if (interval) clearInterval(interval);
+  if (event.target.value !== '') {
+    interval = setTimeout(() => {
+      fetchData(omdbBaseUrl, {
+        apikey: process.env.API_KEY,
+        s: event.target.value,
+      }).then((response) => {
+        console.log(response);
+      });
+    }, 500);
+  }
 });
