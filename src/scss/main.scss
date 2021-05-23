@@ -109,3 +109,39 @@ input {
   padding: 0.5em 0.75em;
   color: #505050;
 }
+
+.input-container {
+  position: relative;
+}
+
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion {
+  background: white;
+  padding: 0.5em;
+  border-bottom: 1px solid #ededed;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.suggestion:last-of-type {
+  border-bottom: none;
+}
+
+.suggestion:hover {
+  background-color: #f2f6fd;
+}
+
+.suggestion img {
+  height: 100px;
+  margin-right: 1em;
+}

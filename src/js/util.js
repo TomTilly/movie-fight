@@ -4,7 +4,19 @@ const fetchData = async (url, params = {}) => {
   const response = await axios.get(url, {
     params,
   });
-  return response;
+  return response.data.Search;
 };
 
-export { fetchData };
+const debounce = (func, delay = 1000) => {
+  let timeoutId;
+  return (...args) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
+export { fetchData, debounce };
