@@ -1,7 +1,15 @@
 import { fetchData, debounce } from './util';
 
 const omdbBaseUrl = 'http://www.omdbapi.com';
-const input1 = document.querySelector('[name="movie-1"]');
+const autocomplete = document.querySelector('.autocomplete');
+
+autocomplete.innerHTML = `
+  <label for="movie-1">Search for a Movie</label>
+  <input type="text" name="movie-1" id="movie-1" />
+  <ul class="dropdown"></ul>
+`;
+
+const input = document.querySelector('[name="movie-1"]');
 
 const onInput = async (event) => {
   const { target } = event;
@@ -10,18 +18,13 @@ const onInput = async (event) => {
       apikey: process.env.API_KEY,
       s: target.value,
     });
-    let suggestions = target.parentElement.querySelector(
-      '.suggestions-container'
-    );
-    if (!suggestions) {
-      suggestions = document.createElement('ul');
-      suggestions.classList.add('suggestions-container');
-      target.parentElement.appendChild(suggestions);
-    }
+
+    const dropdown = target.parentElement.querySelector('.dropdown');
+    dropdown.classList.add('is-active');
 
     // Clear old suggestions
-    while (suggestions.firstChild) {
-      suggestions.removeChild(suggestions.firstChild);
+    while (dropdown.firstChild) {
+      dropdown.removeChild(dropdown.firstChild);
     }
 
     for (let i = 0; i < 5; i += 1) {
@@ -31,10 +34,10 @@ const onInput = async (event) => {
         const suggestion = document.createElement('li');
         suggestion.classList.add('suggestion');
         suggestion.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title}" width="68" height="100"> ${movie.Title}`;
-        suggestions.appendChild(suggestion);
+        dropdown.appendChild(suggestion);
       }
     }
   }
 };
 
-input1.addEventListener('input', debounce(onInput, 500));
+input.addEventListener('input', debounce(onInput, 500));

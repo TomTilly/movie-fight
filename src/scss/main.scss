@@ -101,26 +101,27 @@ main h2 {
   margin-top: 0;
 }
 
+.autocomplete {
+  position: relative;
+}
+
 input {
   width: 100%;
   font-size: 1.2rem;
   border: 1px solid #cdcdcd;
   border-radius: 5px;
   padding: 0.5em 0.75em;
+  margin-top: 0.5em;
   color: #505050;
 }
 
-.input-container {
-  position: relative;
-}
-
-.suggestions-container {
+.dropdown {
   position: absolute;
-  top: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
+  display: none;
 }
 
 .suggestion {
@@ -144,4 +145,10 @@ input {
 .suggestion img {
   height: 100px;
   margin-right: 1em;
+}
+
+/* Utility */
+
+.is-active {
+  display: block;
 }
