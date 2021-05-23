@@ -1,0 +1,7 @@
+.DS_Store
+references.md
+node_modules
+dist
+.cache
+.parcel-cache
+.env

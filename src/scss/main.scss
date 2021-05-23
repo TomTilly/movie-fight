@@ -1,0 +1,109 @@
+/* General */
+
+:root {
+  --black: #444;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  font-size: 100%;
+  color: var(--black);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography */
+
+h2 {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+}
+
+/* Header */
+
+header {
+  background: linear-gradient(to right, #83a4d4, #b6fbff);
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 800px) {
+  header {
+    padding: 2.5rem;
+  }
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 300;
+  font-size: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 800px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+}
+
+header svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: top;
+}
+
+/* Main */
+
+main {
+  padding: 1.5rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1.5rem;
+  background-image: url('../assets/images/interlaced.png');
+  background-size: 300px;
+  flex-grow: 1;
+}
+
+@media (min-width: 800px) {
+  main {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 3rem;
+    padding: 2.5rem;
+  }
+}
+
+.col {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 15px #cdcdcd;
+}
+
+@media (min-width: 800px) {
+  .col {
+    padding: 2rem;
+  }
+}
+
+main h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+input {
+  width: 100%;
+  font-size: 1.2rem;
+  border: 1px solid #cdcdcd;
+  border-radius: 5px;
+  padding: 0.5em 0.75em;
+  color: #505050;
+}
