@@ -1,50 +1,83 @@
-import { fetchData, debounce } from './util';
+import axios from 'axios';
+import createAutoComplete from './autocomplete';
 
 const omdbBaseUrl = 'http://www.omdbapi.com';
-const autocomplete = document.querySelector('.autocomplete');
 
-autocomplete.innerHTML = `
-  <label for="movie-1">Search for a Movie</label>
-  <input type="text" name="movie-1" id="movie-1" />
-  <ul class="dropdown"></ul>
-`;
-
-const input = document.querySelector('[name="movie-1"]');
-
-const onInput = async (event) => {
-  const { target } = event;
-  const dropdown = target.parentElement.querySelector('.dropdown');
-
-  if (!target.value) {
-    dropdown.classList.remove('is-active');
-    return;
-  }
-
-  const movies = await fetchData(omdbBaseUrl, {
-    apikey: process.env.API_KEY,
-    s: target.value,
-  });
-
-  // Clear old suggestions
-  while (dropdown.firstChild) {
-    dropdown.removeChild(dropdown.firstChild);
-  }
-
-  if (!movies.length) {
-    dropdown.classList.remove('is-active');
-  } else {
-    dropdown.classList.add('is-active');
-  }
-
-  for (let i = 0; i < 5; i += 1) {
-    if (movies[i]) {
-      const movie = movies[i];
-      const suggestion = document.createElement('li');
-      suggestion.classList.add('suggestion');
-      suggestion.innerHTML = `<img src="${movie.Poster}" alt="${movie.Title}"> ${movie.Title}`;
-      dropdown.appendChild(suggestion);
-    }
-  }
+const movieTemplate = (movieDetail) => {
+  const imgHTML =
+    movieDetail.Poster === 'N/A'
+      ? ''
+      : `<img src="${movieDetail.Poster}" alt="${movieDetail.Title} Poster">`;
+  return `
+      <header class="${movieDetail.Poster === 'N/A' ? '' : 'has-image'}">
+        ${imgHTML}
+        <h2 class="movie-title">${movieDetail.Title}</h2>
+        <p class="tagline">${movieDetail.Plot}</p>
+      </header>
+      <div class="statistic">
+        <p>${movieDetail.BoxOffice}</p>
+        <label>Box Office</label>
+      </div>
+      <div class="statistic">
+        <p>${movieDetail.imdbRating}</p>
+        <label>Critic Rating</label>
+      </div>
+  `;
 };
 
-input.addEventListener('input', debounce(onInput, 500));
+const onMovieSelect = async (movie, autocompleteEl) => {
+  const response = await axios.get(omdbBaseUrl, {
+    params: {
+      apikey: process.env.API_KEY,
+      i: movie.imdbID,
+    },
+  });
+
+  const col = autocompleteEl.parentElement;
+  let movieEl;
+  if (!col.querySelector('.movie-details')) {
+    movieEl = document.createElement('div');
+    movieEl.classList.add('movie-details');
+    col.appendChild(movieEl);
+  } else {
+    movieEl = col.querySelector('.movie-details');
+  }
+
+  movieEl.innerHTML = movieTemplate(response.data);
+};
+
+const autocompletes = document.querySelectorAll('.autocomplete');
+
+autocompletes.forEach((el) => {
+  createAutoComplete({
+    root: el,
+    renderOption(movie) {
+      const imgHTML =
+        movie.Poster === 'N/A'
+          ? ''
+          : `<img src="${movie.Poster}" alt="${movie.Title}">`;
+      return `${imgHTML}${movie.Title}`;
+    },
+    onOptionSelect(movie) {
+      onMovieSelect(movie, el);
+    },
+    inputValue(movie) {
+      return movie.Title;
+    },
+    async fetchData(searchTerm) {
+      const response = await axios.get(omdbBaseUrl, {
+        params: {
+          apikey: process.env.API_KEY,
+          s: searchTerm,
+        },
+      });
+
+      if (response.data.Error) {
+        return [];
+      }
+
+      return response.data.Search;
+    },
+    id: 'movie-1',
+  });
+});
