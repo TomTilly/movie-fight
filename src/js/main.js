@@ -48,7 +48,7 @@ const onMovieSelect = async (movie, autocompleteEl) => {
 
 const autocompletes = document.querySelectorAll('.autocomplete');
 
-autocompletes.forEach((el) => {
+autocompletes.forEach((el, i) => {
   createAutoComplete({
     root: el,
     renderOption(movie) {
@@ -78,6 +78,6 @@ autocompletes.forEach((el) => {
 
       return response.data.Search;
     },
-    id: 'movie-1',
+    id: `movie-${i}`,
   });
 });
