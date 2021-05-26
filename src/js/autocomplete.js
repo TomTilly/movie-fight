@@ -1,4 +1,4 @@
-import { debounce } from './util';
+import debounce from './util';
 
 const createAutoComplete = ({
   root,

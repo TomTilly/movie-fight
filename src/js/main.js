@@ -15,7 +15,7 @@ const movieTemplate = (movieDetail) => {
     movieDetail.Awards.split(/\D+/) // split string into an array of numbers (beginning and ending with empty strings)
       .filter((el) => el !== '') // get rid of empty string elements
       .map((el) => parseInt(el, 10)) // convert strings into numbers
-      .reduce((prev, cur) => prev + cur), // add all numbers together
+      .reduce((prev, cur) => prev + cur, 0), // add all numbers together
     10
   );
 
@@ -67,6 +67,7 @@ const onMovieSelect = async (movie, autocompleteEl, side) => {
   if (!col.querySelector('.movie-details')) {
     movieEl = document.createElement('div');
     movieEl.classList.add('movie-details');
+    movieEl.id = `${side}-movie`;
     col.appendChild(movieEl);
   } else {
     movieEl = col.querySelector('.movie-details');
@@ -85,7 +86,25 @@ const onMovieSelect = async (movie, autocompleteEl, side) => {
   }
 };
 
-const runComparison = () => {};
+const runComparison = () => {
+  const leftMovieStats = document.querySelectorAll('#left-movie .statistic');
+  const rightMovieStats = document.querySelectorAll('#right-movie .statistic');
+
+  leftMovieStats.forEach((leftStat, i) => {
+    const rightStat = rightMovieStats[i];
+    if (leftStat.dataset.value > rightStat.dataset.value) {
+      leftStat.classList.add('winner');
+      leftStat.classList.remove('loser');
+      rightStat.classList.add('loser');
+      rightStat.classList.remove('winner');
+    } else {
+      leftStat.classList.add('loser');
+      leftStat.classList.remove('winner');
+      rightStat.classList.add('winner');
+      rightStat.classList.remove('loser');
+    }
+  });
+};
 
 const autocompletes = document.querySelectorAll('.autocomplete');
 

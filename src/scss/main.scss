@@ -194,6 +194,14 @@ input {
   padding: 1em;
 }
 
+.winner {
+  background-color: hsl(120, 62%, 84%);
+}
+
+.loser {
+  background-color: hsl(7, 61%, 84%);
+}
+
 .statistic p {
   margin-top: 0;
   margin-bottom: 0.25em;

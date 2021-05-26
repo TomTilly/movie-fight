@@ -10,4 +10,4 @@ const debounce = (func, delay = 1000) => {
   };
 };
 
-export { debounce };
+export default debounce;
