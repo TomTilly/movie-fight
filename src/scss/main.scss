@@ -71,6 +71,7 @@ main {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   grid-gap: 1.5rem;
+  align-items: start;
   flex-grow: 1;
   flex-basis: 0;
 }
