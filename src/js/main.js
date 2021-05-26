@@ -4,6 +4,21 @@ import createAutoComplete from './autocomplete';
 const omdbBaseUrl = 'http://www.omdbapi.com';
 
 const movieTemplate = (movieDetail) => {
+  const dollars = parseInt(
+    movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, ''),
+    10
+  );
+  const metascore = parseInt(movieDetail.Metascore, 10);
+  const imdbRating = parseFloat(movieDetail.imdbRating);
+  const imdbVotes = parseInt(movieDetail.imdbVotes.replace(/,/g, ''), 10);
+  const awards = parseInt(
+    movieDetail.Awards.split(/\D+/) // split string into an array of numbers (beginning and ending with empty strings)
+      .filter((el) => el !== '') // get rid of empty string elements
+      .map((el) => parseInt(el, 10)) // convert strings into numbers
+      .reduce((prev, cur) => prev + cur), // add all numbers together
+    10
+  );
+
   const imgHTML =
     movieDetail.Poster === 'N/A'
       ? ''
@@ -14,18 +29,32 @@ const movieTemplate = (movieDetail) => {
         <h2 class="movie-title">${movieDetail.Title}</h2>
         <p class="tagline">${movieDetail.Plot}</p>
       </header>
-      <div class="statistic">
+      <div data-value="${awards}" class="statistic">
+        <p>${movieDetail.Awards}</p>
+        <label>Awards</label>
+      </div>
+      <div data-value="${dollars}" class="statistic">
         <p>${movieDetail.BoxOffice}</p>
         <label>Box Office</label>
       </div>
-      <div class="statistic">
+      <div data-value="${metascore}" class="statistic">
+        <p>${movieDetail.Metascore}</p>
+        <label>Metascore</label>
+      </div>
+      <div data-value="${imdbRating}" class="statistic">
         <p>${movieDetail.imdbRating}</p>
-        <label>Critic Rating</label>
+        <label>IMDB Rating</label>
+      </div>
+      <div data-value="${imdbVotes}" class="statistic">
+        <p>${movieDetail.imdbVotes}</p>
+        <label>IMDB Votes</label>
       </div>
   `;
 };
 
-const onMovieSelect = async (movie, autocompleteEl) => {
+let leftMovie;
+let rightMovie;
+const onMovieSelect = async (movie, autocompleteEl, side) => {
   const response = await axios.get(omdbBaseUrl, {
     params: {
       apikey: process.env.API_KEY,
@@ -44,7 +73,19 @@ const onMovieSelect = async (movie, autocompleteEl) => {
   }
 
   movieEl.innerHTML = movieTemplate(response.data);
+
+  if (side === 'left') {
+    leftMovie = response.data;
+  } else {
+    rightMovie = response.data;
+  }
+
+  if (leftMovie && rightMovie) {
+    runComparison();
+  }
 };
+
+const runComparison = () => {};
 
 const autocompletes = document.querySelectorAll('.autocomplete');
 
@@ -59,7 +100,8 @@ autocompletes.forEach((el, i) => {
       return `${imgHTML}${movie.Title}`;
     },
     onOptionSelect(movie) {
-      onMovieSelect(movie, el);
+      document.querySelector('.tutorial').classList.add('is-hidden');
+      onMovieSelect(movie, el, i === 0 ? 'left' : 'right');
     },
     inputValue(movie) {
       return movie.Title;

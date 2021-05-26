@@ -84,6 +84,11 @@ main {
   }
 }
 
+.tutorial {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
 .col {
   background: white;
   border-radius: 10px;
@@ -203,4 +208,8 @@ input {
 
 .is-active {
   display: block;
+}
+
+.is-hidden {
+  display: none;
 }
