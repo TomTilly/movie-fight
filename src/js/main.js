@@ -92,7 +92,10 @@ const runComparison = () => {
 
   leftMovieStats.forEach((leftStat, i) => {
     const rightStat = rightMovieStats[i];
-    if (leftStat.dataset.value > rightStat.dataset.value) {
+    if (
+      parseInt(leftStat.dataset.value, 10) >
+      parseInt(rightStat.dataset.value, 10)
+    ) {
       leftStat.classList.add('winner');
       leftStat.classList.remove('loser');
       rightStat.classList.add('loser');
